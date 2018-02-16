@@ -1,3 +1,4 @@
+import { AuthService } from './auth/auth.service';
 import { WelcomeComponent } from './navigation/welcome/welcome.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import { HeaderComponent } from './navigation/header/header.component';
@@ -27,7 +28,7 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     AuthModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

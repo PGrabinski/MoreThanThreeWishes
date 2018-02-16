@@ -13,20 +13,20 @@
 </div>
 <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxHide.xs>
     <ul fxLayout="row" fxLayoutGap="10px" class="navigation-item">
-        <li>
+        <li *ngIf="!userAuth">
             <a routerLink="/signup">Sign up</a>
         </li>
-        <li>
+        <li *ngIf="!userAuth">
             <a routerLink="/login">Login</a>
         </li>
-        <li>
+        <li *ngIf="userAuth">
             <a routerLink="/mywishes">My wishes</a>
         </li>
-        <li>
+        <li *ngIf="userAuth">
             <a routerLink="/wishlists">Wishlists</a>
         </li>
-        <li>
-            <a routerLink="/logout">Log out</a>
+        <li *ngIf="userAuth">
+            <a routerLink="/logout" (click)="onLogout()">Log out</a>
         </li>
     </ul>
 </div>
