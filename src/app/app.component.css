@@ -5,3 +5,11 @@ mat-sidenav-container, mat-sidenav-content, mat-sidenav {
 mat-sidenav {
     width: 200px;
 }
+
+/* app-header {
+    margin-bottom: 20px;
+} */
+
+main {
+    margin-top: 15px;
+}

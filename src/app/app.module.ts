@@ -1,3 +1,5 @@
+import { WishService } from './wish/wish.service';
+import { WishModule } from './wish/wish.module';
 import { AuthService } from './auth/auth.service';
 import { WelcomeComponent } from './navigation/welcome/welcome.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
@@ -19,16 +21,17 @@ import { AppComponent } from './app.component';
     AppComponent,
     HeaderComponent,
     SidenavComponent,
-    WelcomeComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
     AppRoutingModule,
-    AuthModule
+    AuthModule,
+    WishModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, WishService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
