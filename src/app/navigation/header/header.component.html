@@ -1,0 +1,33 @@
+<mat-toolbar color="primary">
+<div fxHide.gt-xs>
+    <button mat-icon-button (click)="onToggle()">
+        <mat-icon>
+            menu
+        </mat-icon>
+    </button>
+</div>
+<div>
+    <a routerLink="/" fxLayout="row" fxLayoutAlign="center center">
+        <span style="color:black;">More than three wishes</span>
+    </a>
+</div>
+<div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxHide.xs>
+    <ul fxLayout="row" fxLayoutGap="10px" class="navigation-item">
+        <li>
+            <a routerLink="/signup">Sign up</a>
+        </li>
+        <li>
+            <a routerLink="/login">Login</a>
+        </li>
+        <li>
+            <a routerLink="/mywishes">My wishes</a>
+        </li>
+        <li>
+            <a routerLink="/wishlists">Wishlists</a>
+        </li>
+        <li>
+            <a routerLink="/logout">Log out</a>
+        </li>
+    </ul>
+</div>
+</mat-toolbar>
