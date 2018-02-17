@@ -1,3 +1,4 @@
+import { AddWishComponent } from './../wish/add-wish/add-wish.component';
 import { WishlistComponent } from './../wish/wishlist/wishlist.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: '', component: WelcomeComponent},
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
-  { path: 'mywishes', component: WishlistComponent}
+  { path: 'mywishes', component: WishlistComponent},
+  { path: 'addwish', component: AddWishComponent}
 ];
 
 @NgModule({

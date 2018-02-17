@@ -1,4 +1,7 @@
+import { WishService } from './../wish.service';
 import { Component, OnInit } from '@angular/core';
+import {  NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-wish',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddWishComponent implements OnInit {
 
-  constructor() { }
+  constructor(private wishService: WishService, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  onSubmit(f: NgForm) {
+    this.wishService.addWish({
+      id: '-1',
+      name: f.value.name,
+      description: f.value.description,
+      link: f.value.link,
+      price: f.value.price,
+      creationDate: new Date(),
+      lastModificationDate: new Date(),
+      state: 'awaiting'
+    });
+    this.router.navigate(['/mywishes']);
   }
 
 }

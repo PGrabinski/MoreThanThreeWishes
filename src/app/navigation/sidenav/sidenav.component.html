@@ -17,18 +17,18 @@
   </a>
   <a mat-list-item routerLink="/mywishes" (click)="onClose()" *ngIf="userAuth">
     <mat-icon>
-      assignment.ind
+      assignment_ind
     </mat-icon>
     <span class="nav-item-label">
       My wishes
     </span>
   </a>
-  <a mat-list-item routerLink="/wishlists" (click)="onClose()" *ngIf="userAuth">
+  <a mat-list-item routerLink="/addwish" (click)="onClose()" *ngIf="userAuth">
     <mat-icon>
-      assessment
+      note_add
     </mat-icon>
     <span class="nav-item-label">
-      Wishlists
+      Add a wish
     </span>
   </a>
   <mat-list-item *ngIf="userAuth">
