@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth/auth.guard';
 import { WishService } from './wish/wish.service';
 import { WishModule } from './wish/wish.module';
 import { AuthService } from './auth/auth.service';
@@ -12,8 +13,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AppComponent } from './app.component';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -29,9 +33,11 @@ import { AppComponent } from './app.component';
     SharedModule,
     AppRoutingModule,
     AuthModule,
-    WishModule
+    WishModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
-  providers: [AuthService, WishService],
+  providers: [AuthService, WishService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

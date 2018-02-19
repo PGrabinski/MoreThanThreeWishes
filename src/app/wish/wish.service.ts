@@ -1,44 +1,37 @@
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { Wish } from './wish.model';
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class WishService {
-  userWishes: Wish[] = [
-    {id: '1',
-    name: 'Coffe drip',
-    description: 'White',
-    tags: 'Beverages',
-    price: '60',
-    creationDate: new Date(),
-    lastModificationDate: new Date(),
-    state: 'awaiting'
-  },
-    {id: '2',
-    name: 'WTF by O`Reiley',
-    tags: 'Book',
-    description: 'Hardcover',
-    price: '150',
-    creationDate: new Date(),
-    lastModificationDate: new Date(),
-    state: 'awaiting'
-  },
-    {id: '3',
-    name: 'Shaving machine',
-    description: 'With vacuum cleaner',
-    price: '500',
-    creationDate: new Date(),
-    lastModificationDate: new Date(),
-    state: 'awaiting'
-    }
-  ];
+  firestoreSubs: Subscription[] = [];
+  wishlister = new Subject<Wish[]>();
+  userWishes: Wish[] = [];
 
-  constructor() { }
+  constructor(private ngFirestore: AngularFirestore) { }
 
   getWishes() {
     return [...this.userWishes];
   }
 
+  fetchWishes() {
+    this.firestoreSubs.push(
+      this.ngFirestore.collection('wishes').valueChanges().subscribe(
+        (wishes: Wish[]) => {
+          this.userWishes = wishes;
+          this.wishlister.next([...wishes]);
+        }
+      )
+    );
+  }
+
   addWish(wish: Wish) {
-    this.userWishes.push(wish);
+    this.addWishToDb(wish);
+  }
+
+  private addWishToDb(wish: Wish) {
+    this.ngFirestore.collection('wishes').add(wish);
   }
 }

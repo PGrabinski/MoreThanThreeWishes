@@ -1,6 +1,7 @@
 import { AuthService } from './../auth.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -8,14 +9,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-
-  constructor(private authService: AuthService, private router: Router) { }
+  matchingPass: Boolean = false;
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
-  signUp() {
-    this.authService.authenticate();
-    this.router.navigate(['/']);
+  signUp(form: NgForm) {
+    this.authService.register({
+      email: form.value.email,
+      password: form.value.password1
+    });
+  }
+
+  verifyPassword(form: NgForm) {
+    if (form.value.password2 === form.value.password1) {
+      this.matchingPass = true;
+    } else {
+      this.matchingPass = false;
+    }
   }
 }

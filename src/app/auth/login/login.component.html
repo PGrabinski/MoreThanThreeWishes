@@ -1,8 +1,12 @@
-<section fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
- <h1>Login</h1>
- <button mat-raised-button (click)="onLogin()">
-  <span>
-    Login
-  </span>
- </button>
-</section>
+<form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" #f="ngForm" (ngSubmit)="onLogin(f)">
+<mat-form-field>
+  <input type="email" name="email" placeholder="Email" ngModel matInput #emailInput="ngModel" email required>
+  <mat-error *ngIf="emailInput.hasError('email')">The email is invalid!</mat-error>
+  <mat-error *ngIf="emailInput.hasError('required')">The field is required!</mat-error>
+</mat-form-field>
+<mat-form-field>
+  <input type="password" name="password" placeholder="Password" ngModel matInput #passwordInput="ngModel" required>
+  <mat-error *ngIf="passwordInput.hasError('required')">The field is required!</mat-error>
+</mat-form-field>
+<button mat-raised-button [disabled]="f.invalid">Login</button>
+</form>

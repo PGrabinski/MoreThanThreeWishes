@@ -1,3 +1,4 @@
+import { AuthGuard } from './../auth/auth.guard';
 import { AddWishComponent } from './../wish/add-wish/add-wish.component';
 import { WishlistComponent } from './../wish/wishlist/wishlist.component';
 import { NgModule } from '@angular/core';
@@ -12,8 +13,8 @@ const routes: Routes = [
   { path: '', component: WelcomeComponent},
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
-  { path: 'mywishes', component: WishlistComponent},
-  { path: 'addwish', component: AddWishComponent}
+  { path: 'mywishes', component: WishlistComponent, canActivate: [AuthGuard]},
+  { path: 'addwish', component: AddWishComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

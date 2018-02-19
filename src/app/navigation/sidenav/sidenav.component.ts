@@ -26,9 +26,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.authService.unauthenticate();
     this.onClose();
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
   ngOnDestroy() {

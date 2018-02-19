@@ -10,6 +10,9 @@ import { MatSidenavModule} from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +25,9 @@ import { MatTableModule } from '@angular/material/table';
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   exports: [
     MatButtonModule,
@@ -34,7 +39,9 @@ import { MatTableModule } from '@angular/material/table';
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ]
 })
 export class MaterialsModule { }
