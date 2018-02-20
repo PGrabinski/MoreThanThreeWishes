@@ -9,32 +9,40 @@
     <mat-header-cell *matHeaderCellDef mat-sort-header>
       Creation
     </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{element.creationDate | date}}
+    <mat-cell *matCellDef="let element; let i = index">
+      <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+        {{element.creationDate | date}}
+      </a>      
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
       Name
     </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{element.name}}
+    <mat-cell *matCellDef="let element; let i = index">
+        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+        {{element.name}}
+      </a>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="description">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
       Description
     </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{element.description}}
+    <mat-cell *matCellDef="let element; let i = index">
+        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+          {{element.description}}
+        </a>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="price">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
       Price
     </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{element.price}}
+    <mat-cell *matCellDef="let element; let i = index">
+        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+          {{element.price}}
+        </a>
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
