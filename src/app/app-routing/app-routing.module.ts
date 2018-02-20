@@ -1,3 +1,4 @@
+import { WishComponent } from './../wish/wish/wish.component';
 import { AuthGuard } from './../auth/auth.guard';
 import { AddWishComponent } from './../wish/add-wish/add-wish.component';
 import { WishlistComponent } from './../wish/wishlist/wishlist.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'mywishes', component: WishlistComponent, canActivate: [AuthGuard]},
+  { path: 'mywishes/:id', component: WishComponent, canActivate: [AuthGuard]},
   { path: 'addwish', component: AddWishComponent, canActivate: [AuthGuard]}
 ];
 

@@ -29,6 +29,10 @@ export class WishService {
     );
   }
 
+  getWishById(id) {
+    return {...this.userWishes[id]};
+  }
+
   addWish(wish: Wish) {
     this.addWishToDb(wish);
   }
