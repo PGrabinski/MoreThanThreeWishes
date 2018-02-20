@@ -2,6 +2,7 @@
 
 # Enviroments
 /src/environments/environment.ts
+/src/environments/environment.prod.ts
 
 # compiled output
 /dist

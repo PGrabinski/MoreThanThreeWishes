@@ -24,12 +24,14 @@ export class AuthService {
         if (user) {
           this.authChange.next(true);
           this.userAuthState = true;
+          this.wishService.setUserId(user.uid);
           this.router.navigate(['/']);
         } else {
           this.authChange.next(false);
           this.userAuthState = false;
+          this.wishService.setUserId('');
+          this.wishService.cancelFirestoreSubs();
           this.router.navigate(['/']);
-          // this.wishService.cancelSubs();
         }
       }
     );

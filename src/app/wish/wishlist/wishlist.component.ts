@@ -4,6 +4,7 @@ import { Wish } from './../wish.model';
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-wishlist',
@@ -16,12 +17,13 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
   wisherSub: Subscription;
   displayedColumns = ['creationDate', 'name', 'description', 'price'];
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private wishService: WishService) { }
 
   ngOnInit() {
     this.wishesData.data = this.givenWishes;
     this.wisherSub = this.wishService.wishlister.subscribe(
-      (wishes: Wish[]) => { 
+      (wishes: Wish[]) => {
         this.givenWishes = wishes;
         this.wishesData.data = this.givenWishes;
       }
@@ -31,6 +33,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.wishesData.sort = this.sort;
+    this.wishesData.paginator = this.paginator;
    }
 
   doFilter(phrase: string) {
