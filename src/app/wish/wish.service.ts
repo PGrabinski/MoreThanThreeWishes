@@ -68,11 +68,11 @@ export class WishService implements OnInit {
     this.ngFirestore.collection('users/').doc(this.userId).collection('wishes').doc('wish.id').set(wish);
   }
 
-  copyWishes() {
-    for (const wish of this.userWishes) {
-      this.ngFirestore.collection('users/').doc(this.userId).collection('wish.id').add(wish);
-    }
-  }
+  // copyWishes() {
+  //   for (const wish of this.userWishes) {
+  //     this.ngFirestore.collection('users/').doc(this.userId).collection('wish.id').add(wish);
+  //   }
+  // }
 
   cancelFirestoreSubs() {
     for (const sub of this.firestoreSubs) {
