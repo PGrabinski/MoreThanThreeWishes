@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { WishComponent } from './wish/wish.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { AddWishComponent } from './add-wish/add-wish.component';
+import { EditWishComponent } from './edit-wish/edit-wish.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AddWishComponent } from './add-wish/add-wish.component';
   declarations: [
     WishComponent,
     WishlistComponent,
-    AddWishComponent
+    AddWishComponent,
+    EditWishComponent
   ]
 })
 export class WishModule { }

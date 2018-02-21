@@ -1,0 +1,8 @@
+.wishLink {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.wishLink:hover {
+    color: lightgrey;
+}

@@ -1,0 +1,24 @@
+<div>
+<form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" #f="ngForm" (ngSubmit)="onEdit()">
+<mat-form-field>
+  <input type="text" name="name" #nameInput="ngModel" ngModel matInput [(ngModel)]="wish.name" required>
+</mat-form-field>
+<mat-form-field>
+  <textarea name="description" #descriptionInput="ngModel" ngModel matInput required [(ngModel)]="wish.description"></textarea>
+</mat-form-field>
+<mat-form-field>
+  <input type="number" name="price" #priceInput="ngModel" ngModel matInput [(ngModel)]="wish.price" required>
+</mat-form-field>
+<mat-form-field>
+  <mat-select [(ngModel)]="wish.state" ngModel required name="wish.state">
+    <mat-option value="awaiting">
+      Awaiting
+    </mat-option>
+    <mat-option value="cameTrue">
+      Came true
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" [disabled]="f.invalid || !f.touched">Save</button>
+</form>
+</div>

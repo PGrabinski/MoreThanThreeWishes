@@ -40,7 +40,9 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
     this.wishesData.filter = phrase.trim().toLowerCase();
   }
 
-
+  onCopy() {
+    this.wishService.copyWishes();
+  }
 
   ngOnDestroy() {
     if (this.wisherSub) {
