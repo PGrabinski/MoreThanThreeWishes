@@ -45,6 +45,16 @@
         </a>
     </mat-cell>
   </ng-container>
+  <ng-container matColumnDef="state">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      State
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element; let i = index">
+        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+          {{ element.state | state }}
+        </a>
+    </mat-cell>
+  </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>

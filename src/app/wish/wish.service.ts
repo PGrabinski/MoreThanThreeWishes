@@ -12,25 +12,21 @@ export class WishService implements OnInit {
   userWishes: Wish[] = [];
   userId = '';
   idCounter = 0;
-  
 
   constructor(private ngFirestore: AngularFirestore) { }
 
   ngOnInit() {
-    this.ngFirestore.collection('counter').doc('counter').valueChanges().subscribe(
+    this.firestoreSubs.push(
+      this.ngFirestore.collection('counter').doc('counter').valueChanges().subscribe(
       (counter: number) => {
         this.idCounter = counter;
       }
-    );
-  }
-
-  getWishes() {
-    return [...this.userWishes];
+    ));
   }
 
   fetchWishes() {
     this.firestoreSubs.push(
-      this.ngFirestore.collection('wishes/').doc(this.userId).collection('wishes').valueChanges().subscribe(
+      this.ngFirestore.collection('users').doc(this.userId).collection('personalWishes').valueChanges().subscribe(
         (wishes: Wish[]) => {
           this.userWishes = wishes;
           this.wishlister.next([...wishes]);
@@ -53,26 +49,16 @@ export class WishService implements OnInit {
   }
 
   addWish(wish: Wish) {
-    this.addWishToDb(wish);
+    this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).set(wish);
   }
 
   updateWish(wish: Wish) {
-    this.ngFirestore.collection('users/').doc(this.userId).collection('wishes').doc(wish.id.toString()).update(wish);
+    this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).update(wish);
   }
 
   setUserId(id: string) {
     this.userId = id;
   }
-
-  private addWishToDb(wish: Wish) {
-    this.ngFirestore.collection('users/').doc(this.userId).collection('wishes').doc('wish.id').set(wish);
-  }
-
-  // copyWishes() {
-  //   for (const wish of this.userWishes) {
-  //     this.ngFirestore.collection('users/').doc(this.userId).collection('wish.id').add(wish);
-  //   }
-  // }
 
   cancelFirestoreSubs() {
     for (const sub of this.firestoreSubs) {
@@ -81,4 +67,18 @@ export class WishService implements OnInit {
       }
     }
   }
+
+  // --------------------------------------------------------------------------------------------------
+  // Past utilities
+  // --------------------------------------------------------------------------------------------------
+
+    // getWishes() {
+  //   return [...this.userWishes];
+  // }
+
+    // copyWishes() {
+  //   for (const wish of this.userWishes) {
+  //     this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).set(wish);
+  //   }
+  // }
 }

@@ -4,6 +4,9 @@
   <input type="text" name="name" #nameInput="ngModel" ngModel matInput [(ngModel)]="wish.name" required>
 </mat-form-field>
 <mat-form-field>
+  <input type="url" name="link" #linkInput="ngModel" ngModel matInput [(ngModel)]="wish.link">
+</mat-form-field>
+<mat-form-field>
   <textarea name="description" #descriptionInput="ngModel" ngModel matInput required [(ngModel)]="wish.description"></textarea>
 </mat-form-field>
 <mat-form-field>
@@ -19,6 +22,6 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<button mat-raised-button color="primary" [disabled]="f.invalid || !f.touched">Save</button>
+<button mat-raised-button color="primary" [disabled]="f.invalid">Save</button>
 </form>
 </div>

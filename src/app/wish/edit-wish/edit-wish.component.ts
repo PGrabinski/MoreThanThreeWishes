@@ -1,6 +1,6 @@
 import { Wish } from './../wish.model';
 import { WishService } from './../wish.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -15,9 +15,14 @@ export class EditWishComponent implements OnInit {
     name:  '',
     price: 0,
     description: '',
-    state: null
+    state: null,
+    link: ''
   };
-  constructor(private activatedRoute: ActivatedRoute, private wishService: WishService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private wishService: WishService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(
@@ -27,7 +32,10 @@ export class EditWishComponent implements OnInit {
         this.wish.description = this.editableWish.description;
         this.wish.price = this.editableWish.price;
         this.wish.state = this.editableWish.state;
-        console.log(this.editableWish);
+        if (this.editableWish.link) {
+          this.wish.link = this.editableWish.link;
+        }
+        // console.log(this.editableWish);
       }
     );
   }
@@ -38,8 +46,10 @@ export class EditWishComponent implements OnInit {
         price: this.wish.price,
         description: this.wish.description,
         state: this.wish.state,
+        link: this.wish.link,
         lastModificationDate: new Date()
       }
     );
+    this.router.navigate(['/mywishes']);
   }
 }

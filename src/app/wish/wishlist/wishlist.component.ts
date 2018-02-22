@@ -15,7 +15,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
   givenWishes: Wish[] = [];
   wishesData = new MatTableDataSource<Wish>();
   wisherSub: Subscription;
-  displayedColumns = ['creationDate', 'name', 'description', 'price'];
+  displayedColumns = ['creationDate', 'name', 'description', 'price', 'state'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private wishService: WishService) { }

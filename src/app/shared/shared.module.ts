@@ -3,6 +3,7 @@ import { MaterialsModule } from './../materials/materials.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StatePipe } from './state.pipe';
 
 @NgModule({
   imports: [
@@ -14,7 +15,9 @@ import { FormsModule } from '@angular/forms';
   exports: [
     MaterialsModule,
     FlexLayoutModule,
-    FormsModule
-  ]
+    FormsModule,
+    StatePipe
+  ],
+  declarations: [StatePipe]
 })
 export class SharedModule { }
