@@ -37,11 +37,11 @@
   </ng-container>
   <ng-container matColumnDef="price">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
-      Price
+      Price [zł]
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
         <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
-          {{element.price}}
+          {{element.price}} 
         </a>
     </mat-cell>
   </ng-container>
