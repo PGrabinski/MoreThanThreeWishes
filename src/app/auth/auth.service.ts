@@ -13,7 +13,6 @@ export class AuthService {
   constructor(
     private router: Router,
     private ngFireAuth: AngularFireAuth,
-    // Make cancel subscriptions
     private wishService: WishService
   ) { }
 
@@ -53,6 +52,7 @@ export class AuthService {
   // Logs out the user
   logout() {
     this.ngFireAuth.auth.signOut();
+    this.wishService.cancelFirestoreSubs();
   }
 
 

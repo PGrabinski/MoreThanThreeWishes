@@ -1,26 +1,26 @@
+import { Observable } from 'rxjs/Observable';
 import { AuthService } from './../auth/auth.service';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { Wish } from './wish.model';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { take } from 'rxjs/operators/take';
 
 @Injectable()
-export class WishService implements OnInit {
+export class WishService {
   firestoreSubs: Subscription[] = [];
   wishlister = new Subject<Wish[]>();
   userWishes: Wish[] = [];
   userId = '';
-  idCounter = 0;
+  private idCounter = 0;
 
   constructor(private ngFirestore: AngularFirestore) { }
 
-  ngOnInit() {
-    this.firestoreSubs.push(
-      this.ngFirestore.collection('counter').doc('counter').valueChanges().subscribe(
-      (counter: number) => {
-        this.idCounter = counter;
-      }
+
+  counterListener() {
+    this.firestoreSubs.push(this.ngFirestore.collection('counter').doc<{counter: number}>('counter').valueChanges().subscribe(
+      counter => this.idCounter = counter.counter
     ));
   }
 
@@ -36,10 +36,9 @@ export class WishService implements OnInit {
   }
 
   getNewId() {
-    const counter = this.idCounter;
-    this.idCounter += 1;
-    this.ngFirestore.collection('counter').doc('counter').update(
-      {counter: this.idCounter}
+    const counter = this.idCounter + 1;
+    this.ngFirestore.collection('counter').doc<{counter: number}>('counter').update(
+      {counter: counter }
     );
     return counter;
   }
