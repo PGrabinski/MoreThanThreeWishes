@@ -1,3 +1,4 @@
+import { UiService } from './../shared/ui.service';
 import { AuthData } from './auth-data.model';
 import { WishService } from './../wish/wish.service';
 import { Router } from '@angular/router';
@@ -13,7 +14,8 @@ export class AuthService {
   constructor(
     private router: Router,
     private ngFireAuth: AngularFireAuth,
-    private wishService: WishService
+    private wishService: WishService,
+    private uiService: UiService
   ) { }
 
   // Fires up on initiation of the AppComponent enabling reactive authentication
@@ -39,14 +41,14 @@ export class AuthService {
   // Registers a user with email and password from the SignupComponent
   register(authData: AuthData) {
     this.ngFireAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
-    .catch(err => console.log(err));
+    .catch(err => this.uiService.showSnackBar(err.message, null, 10000));
   }
 
   // Signs in a user with email and password from the LoginComponent
   login(authData: AuthData) {
     this.ngFireAuth.auth
     .signInWithEmailAndPassword(authData.email, authData.password)
-    .catch( err => console.log(err));
+    .catch( err => this.uiService.showSnackBar(err.message, null, 10000));
   }
 
   // Logs out the user

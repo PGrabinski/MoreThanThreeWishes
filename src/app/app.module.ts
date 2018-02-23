@@ -1,3 +1,4 @@
+import { UiService } from './shared/ui.service';
 import { AuthGuard } from './auth/auth.guard';
 import { WishService } from './wish/wish.service';
 import { WishModule } from './wish/wish.module';
@@ -37,7 +38,7 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
-  providers: [AuthService, WishService, AuthGuard],
+  providers: [AuthService, WishService, AuthGuard, UiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

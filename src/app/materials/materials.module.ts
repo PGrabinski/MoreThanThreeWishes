@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ],
   exports: [
     MatButtonModule,
@@ -44,7 +46,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialsModule { }

@@ -17,7 +17,6 @@ export class WishService {
 
   constructor(private ngFirestore: AngularFirestore) { }
 
-
   counterListener() {
     this.firestoreSubs.push(this.ngFirestore.collection('counter').doc<{counter: number}>('counter').valueChanges().subscribe(
       counter => this.idCounter = counter.counter
