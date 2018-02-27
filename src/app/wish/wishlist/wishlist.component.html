@@ -26,10 +26,10 @@
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
+    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>
       Description
     </mat-header-cell>
-    <mat-cell *matCellDef="let element; let i = index">
+    <mat-cell *matCellDef="let element; let i = index" fxHide.xs>
         <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
           {{element.description}}
         </a>

@@ -11,9 +11,10 @@ import { take } from 'rxjs/operators/take';
 export class WishService {
   firestoreSubs: Subscription[] = [];
   wishlister = new Subject<Wish[]>();
+  wishlisterById = new Subject<Wish[]>();
   userWishes: Wish[] = [];
   userId = '';
-  private idCounter = 0;
+  private idCounter: number;
 
   constructor(private ngFirestore: AngularFirestore) { }
 
@@ -23,7 +24,7 @@ export class WishService {
     ));
   }
 
-  fetchWishes() {
+  fetchOwnWishes() {
     this.firestoreSubs.push(
       this.ngFirestore.collection('users').doc(this.userId).collection('personalWishes').valueChanges().subscribe(
         (wishes: Wish[]) => {
@@ -34,12 +35,27 @@ export class WishService {
     );
   }
 
-  getNewId() {
-    const counter = this.idCounter + 1;
-    this.ngFirestore.collection('counter').doc<{counter: number}>('counter').update(
-      {counter: counter }
+  fetchWishlistById(id: string) {
+    this.firestoreSubs.push(
+      this.ngFirestore.collection('wishlists').doc(id).valueChanges().subscribe(
+        (wishes: Wish[]) => {
+          this.userWishes = wishes;
+          this.wishlisterById.next([...wishes]);
+        }
+      )
     );
-    return counter;
+  }
+
+  getNewId() {
+    if (this.idCounter) {
+      const counter = this.idCounter + 1;
+      this.ngFirestore.collection('counter').doc<{counter: number}>('counter').update(
+        { counter: counter }
+      );
+      return counter;
+    } else {
+      throw(new Error('Id not downloaded'));
+    }
   }
 
   getWishById(id) {

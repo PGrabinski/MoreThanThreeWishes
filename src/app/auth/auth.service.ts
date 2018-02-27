@@ -38,20 +38,20 @@ export class AuthService {
     );
   }
 
-  // Registers a user with email and password from the SignupComponent
+  // Registers a user with email and password from the SignupComponent's form
   register(authData: AuthData) {
     this.ngFireAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
     .catch(err => this.uiService.showSnackBar(err.message, null, 10000));
   }
 
-  // Signs in a user with email and password from the LoginComponent
+  // Signs in a user with email and password from the LoginComponent's form
   login(authData: AuthData) {
     this.ngFireAuth.auth
     .signInWithEmailAndPassword(authData.email, authData.password)
     .catch( err => this.uiService.showSnackBar(err.message, null, 10000));
   }
 
-  // Logs out the user
+  // Logs out the user erasing all user's data and database subscriptions
   logout() {
     this.ngFireAuth.auth.signOut();
     this.wishService.cancelFirestoreSubs();

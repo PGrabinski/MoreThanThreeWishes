@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'mywishes', component: WishlistComponent, canActivate: [AuthGuard]},
   { path: 'mywishes/:id', component: WishComponent, canActivate: [AuthGuard]},
   { path: 'mywishes/:id/edit', component: EditWishComponent, canActivate: [AuthGuard]},
+  { path: 'wishlist/:id', component: WishlistComponent, canActivate: [AuthGuard]},
   { path: 'addwish', component: AddWishComponent, canActivate: [AuthGuard]}
 ];
 
