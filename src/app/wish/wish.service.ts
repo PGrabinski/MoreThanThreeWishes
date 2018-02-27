@@ -1,3 +1,4 @@
+import { Wishlist } from './wishlist.model';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './../auth/auth.service';
 import { Subject } from 'rxjs/Subject';
@@ -11,9 +12,10 @@ import { take } from 'rxjs/operators/take';
 export class WishService {
   firestoreSubs: Subscription[] = [];
   wishlister = new Subject<Wish[]>();
-  wishlisterById = new Subject<Wish[]>();
+  wishlisterById = new Subject<Wishlist>();
   userWishes: Wish[] = [];
   userId = '';
+  currentWishlist: Wishlist;
   private idCounter: number;
 
   constructor(private ngFirestore: AngularFirestore) { }
@@ -38,9 +40,9 @@ export class WishService {
   fetchWishlistById(id: string) {
     this.firestoreSubs.push(
       this.ngFirestore.collection('wishlists').doc(id).valueChanges().subscribe(
-        (wishes: Wish[]) => {
-          this.userWishes = wishes;
-          this.wishlisterById.next([...wishes]);
+        (wishList: Wishlist) => {
+          this.currentWishlist = wishList;
+          this.wishlisterById.next({...wishList});
         }
       )
     );

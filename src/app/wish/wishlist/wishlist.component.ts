@@ -28,7 +28,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   wishesData = new MatTableDataSource<Wish>();
 
-  private ownMode: boolean;
+  ownMode: boolean;
   private id: string;
   routeSub: Subscription;
 
@@ -56,8 +56,8 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.wishesData.data = this.givenWishlist.wishes;
           this.wisherSub = this.wishService.wishlisterById.subscribe(
-            (wishes: Wish[]) => {
-              this.givenWishlist.wishes = wishes;
+            (wishList: Wishlist) => {
+              this.givenWishlist = wishList;
               this.wishesData.data = this.givenWishlist.wishes;
             }
           );

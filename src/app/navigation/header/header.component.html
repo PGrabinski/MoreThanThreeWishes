@@ -29,6 +29,9 @@
             <a routerLink="/addwish">Add Wish</a>
         </li>
         <li *ngIf="userAuth">
+            <a routerLink="/wishlist/1">Wishlist 1</a>
+        </li>
+        <li *ngIf="userAuth">
             <a routerLink="/" (click)="onLogout()">Log out</a>
         </li>
     </ul>
