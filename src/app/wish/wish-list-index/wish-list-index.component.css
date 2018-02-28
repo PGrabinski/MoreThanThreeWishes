@@ -1,0 +1,9 @@
+.wishlistLink {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.wishlistLink:hover {
+    color: lightgray;
+    text-decoration: none;
+}

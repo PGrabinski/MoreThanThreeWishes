@@ -1,3 +1,4 @@
+import { WishlistId } from './wishlist-id';
 import { Wishlist } from './wishlist.model';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './../auth/auth.service';
@@ -13,10 +14,12 @@ export class WishService {
   firestoreSubs: Subscription[] = [];
   wishlister = new Subject<Wish[]>();
   wishlisterById = new Subject<Wishlist>();
+  wishlisterLister = new Subject<WishlistId[]>();
   userWishes: Wish[] = [];
   userId = '';
   currentWishlist: Wishlist;
   private idCounter: number;
+  wishlists = [];
 
   constructor(private ngFirestore: AngularFirestore) { }
 
@@ -32,6 +35,17 @@ export class WishService {
         (wishes: Wish[]) => {
           this.userWishes = wishes;
           this.wishlister.next([...wishes]);
+        }
+      )
+    );
+  }
+
+  fetchWishlistList() {
+    this.firestoreSubs.push(
+      this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').valueChanges().subscribe(
+        (wishlists: WishlistId[]) => {
+          this.wishlists = wishlists;
+          this.wishlisterLister.next([...wishlists]);
         }
       )
     );
@@ -70,6 +84,23 @@ export class WishService {
 
   updateWish(wish: Wish) {
     this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).update(wish);
+  }
+
+  addEmptyWishlistList() {
+    this.ngFirestore.collection('users/').doc(this.userId).collection('wishlists').add(
+      {
+        name: 'Test',
+        id: 'aaa',
+        wishes: [{
+          id: 999,
+          name: 'test'
+          // description: 'testing',
+          // creationDate: new Date(),
+          // lastModificationDate: new Date(),
+          // price: 999
+        }]
+      }
+    );
   }
 
   setUserId(id: string) {

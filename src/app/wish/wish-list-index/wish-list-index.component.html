@@ -1,3 +1,7 @@
-<p>
-  wish-list-index works!
-</p>
+<mat-list fxLayout="column" role="list" fxLayoutAlign="center center">
+  <mat-card fxLayout="row" *ngFor="let item of wishlistsData" fxFlex.lt-sm="100%" fxFill fxLayoutAlign="center center">
+    <mat-card-title>
+      <a routerLink="/wishlist/{{item.id}}" class="wishlistLink">{{ item.name }}</a>
+    </mat-card-title>
+  </mat-card>
+</mat-list>
