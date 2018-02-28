@@ -1,3 +1,23 @@
+<form fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px" #fAdd="ngForm" (ngSubmit)="addWishlist(fAdd)">
+  <h3>Enter wishlist token:</h3>
+  <mat-form-field>
+    <input matInput ngModel type="text" name="wishlistToken" required>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="add" [disabled]="fAdd.invalid">
+    Add Wishlist
+  </button>
+</form>
+<mat-divider></mat-divider>
+<form fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px" #fNew="ngForm" (ngSubmit)="addNewWishlist(fNew)">
+  <h3>New wishlist name:</h3>
+  <mat-form-field>
+    <input matInput ngModel type="text" name="newWishlist" required>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="add" [disabled]="fNew.invalid">
+    New Wishlist
+  </button>
+</form>
+<mat-divider></mat-divider>
 <mat-list fxLayout="column" role="list" fxLayoutAlign="center center">
   <mat-card fxLayout="row" *ngFor="let item of wishlistsData" fxFlex.lt-sm="100%" fxFill fxLayoutAlign="center center">
     <mat-card-title>
