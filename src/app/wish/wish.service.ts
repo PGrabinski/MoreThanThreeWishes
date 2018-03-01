@@ -8,7 +8,7 @@ import { Wish } from './wish.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { take } from 'rxjs/operators/take';
-import { DocumentSnapshot } from '@firebase/firestore-types';
+import { DocumentSnapshot, QuerySnapshot } from '@firebase/firestore-types';
 
 @Injectable()
 export class WishService {
@@ -86,10 +86,15 @@ export class WishService {
         (wishesId: any) => {
           const wishesTemp = wishesId.personalWishes;
           for (const id of wishesTemp) {
+            const wishId = this.ownWishesIds.findIndex(tempId => id === tempId);
+            if (wishId === -1) {
+              this.ownWishesIds.push(id);
+            }
             this.firestoreSubs.push(
               this.ngFirestore.collection('wishes').doc<Wish>(id).valueChanges().subscribe(
                 (wish: Wish) => {
                   this.addWishToOwnWishes(wish);
+                  this.ownWishesEmmiter.next([...this.ownWishes]);
                 }
               )
             );
@@ -108,7 +113,6 @@ export class WishService {
       this.ownWishes[wishTempId] = wish;
     } else {
       this.ownWishes.push(wish);
-      this.ownWishesEmmiter.next([...this.ownWishes]);
     }
   }
 
@@ -122,12 +126,17 @@ export class WishService {
 
   addWish(wish: Wish) {
     const newWishRef = this.ngFirestore.collection('wishes/').ref;
+    let newWishId: string;
     newWishRef.add(wish).then(
       (doc) => {
+        newWishId = doc.id;
         newWishRef.doc(doc.id).update({
           ...wish,
           id: doc.id
         });
+        const tempObj = {personalWishes: new Array<string>(...this.ownWishesIds, newWishId)};
+        console.log(tempObj);
+        this.ngFirestore.collection('users').doc(this.userId).update(tempObj);
       });
   }
 

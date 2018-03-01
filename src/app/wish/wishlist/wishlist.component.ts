@@ -3,7 +3,7 @@ import { Wishlist } from './../wishlist.model';
 import { Subscription } from 'rxjs/Subscription';
 import { WishService } from './../wish.service';
 import { Wish } from './../wish.model';
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy, OnChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.css']
 })
-export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   givenWishlistName: string;
   givenWishes: Wish[] = [];
@@ -34,6 +34,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('WishlistComp initiated');
     this.routeSub = this.activatedRoute.params.subscribe(
       (params: Params) => {
         this.id =  params['id'];
@@ -68,6 +69,14 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
     this.wishesData.paginator = this.paginator;
    }
 
+   ngOnChanges() {
+     if (this.ownMode) {
+       this.wishService.fetchOwnWishes();
+     } else {
+       this.wishService.fetchWishlistById(this.id);
+     }
+   }
+
   doFilter(phrase: string) {
     this.wishesData.filter = phrase.trim().toLowerCase();
   }
@@ -79,5 +88,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.routeSub) {
       this.routeSub.unsubscribe();
     }
+    console.log('WishlistComp destroyed');
+    
   }
 }
