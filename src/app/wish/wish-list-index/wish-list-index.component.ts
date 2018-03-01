@@ -20,12 +20,12 @@ export class WishListIndexComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.wishlistSub = this.wishService.wishlisterLister.subscribe(
+    this.wishlistSub = this.wishService.userWishlists.subscribe(
       (wishlists: WishlistId[]) => {
         this.wishlistsData = wishlists;
       }
     );
-    this.wishService.fetchWishlistList();
+    this.wishService.fetchWishlists();
   }
 
   addWishlist(form: NgForm) {

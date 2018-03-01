@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Wish } from './../wish.model';
 import { WishService } from './../wish.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -10,13 +11,16 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./edit-wish.component.css']
 })
 export class EditWishComponent implements OnInit {
-  editableWish: Wish;
-  wish = {
-    name:  '',
-    price: 0,
+  wishSub: Subscription;
+  wish: Wish = {
+    id: '',
+    name: '',
+    price: null,
+    link: '',
     description: '',
-    state: null,
-    link: ''
+    creationDate: null,
+    lastModificationDate: null,
+    state: null
   };
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -27,29 +31,27 @@ export class EditWishComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       (params: Params) => {
-        this.editableWish = this.wishService.getWishById(params['id']);
-        this.wish.name = this.editableWish.name;
-        this.wish.description = this.editableWish.description;
-        this.wish.price = this.editableWish.price;
-        this.wish.state = this.editableWish.state;
-        if (this.editableWish.link) {
-          this.wish.link = this.editableWish.link;
-        }
-        // console.log(this.editableWish);
+        this.wishService.getWishById(params['id']);
+      }
+    );
+    this.wishSub = this.wishService.wishById.subscribe(
+      (wish: Wish) => {
+        this.wish = wish;
       }
     );
   }
+
   onEdit() {
-    this.wishService.updateWish(
-      {...this.editableWish,
-        name: this.wish.name,
-        price: this.wish.price,
-        description: this.wish.description,
-        state: this.wish.state,
-        link: this.wish.link,
-        lastModificationDate: new Date()
-      }
-    );
+    const wish = {
+      ...this.wish,
+      name: this.wish.name,
+      price: this.wish.price,
+      description: this.wish.description,
+      state: this.wish.state,
+      link: this.wish.link,
+      lastModificationDate: new Date()
+    };
+    this.wishService.updateWish(wish);
     this.router.navigate(['/mywishes']);
   }
 }

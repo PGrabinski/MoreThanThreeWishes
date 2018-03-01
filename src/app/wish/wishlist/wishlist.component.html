@@ -10,7 +10,7 @@
       Creation
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-      <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+      <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
         {{element.creationDate | date}}
       </a>      
     </mat-cell>
@@ -20,7 +20,7 @@
       Name
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
         {{element.name}}
       </a>
     </mat-cell>
@@ -30,7 +30,7 @@
       Description
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index" fxHide.xs>
-        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
           {{element.description}}
         </a>
     </mat-cell>
@@ -40,7 +40,7 @@
       Price [zł]
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
           {{element.price}} 
         </a>
     </mat-cell>
@@ -50,7 +50,7 @@
       State
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <a  routerLinkActive="active" routerLink="{{i}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
           {{ element.state | state }}
         </a>
     </mat-cell>

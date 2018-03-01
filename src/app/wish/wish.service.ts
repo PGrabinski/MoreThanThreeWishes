@@ -8,44 +8,58 @@ import { Wish } from './wish.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { take } from 'rxjs/operators/take';
+import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Injectable()
 export class WishService {
+
+  // --------------------------------------------------------------------------------------------------
+  // Declaration zone
+  // --------------------------------------------------------------------------------------------------
+
+  // Table of subscriptions handling the database connections
   firestoreSubs: Subscription[] = [];
-  wishlister = new Subject<Wish[]>();
-  wishlisterById = new Subject<Wishlist>();
-  wishlisterLister = new Subject<WishlistId[]>();
-  userWishes: Wish[] = [];
+
+  // Emmitter for user's own wishlist
+  ownWishesEmmiter = new Subject<Wish[]>();
+
+  // List of id leading to own wishes
+  ownWishesIds: string[] = [];
+
+  // Users own wishlist
+  ownWishes: Wish[] = [];
+
+  // Emmiter for a chosen wishlist (chosen by id)
+  wishlistById = new Subject<Wishlist>();
+
+  // Emmiter for a list of wishlist available for the users view
+  userWishlists = new Subject<WishlistId[]>();
+
+  // Emmiter for a single wish
+  wishById = new Subject<any>();
+
+  // Users id as given by Firebase authentication
+  // Used to write data in users personal directory
   userId = '';
+
+  // Currently viewed wishlist
   currentWishlist: Wishlist;
-  private idCounter: number;
+
+  // List of wishlists available for user's view
   wishlists = [];
 
   constructor(private ngFirestore: AngularFirestore) { }
 
-  counterListener() {
-    this.firestoreSubs.push(this.ngFirestore.collection('counter').doc<{counter: number}>('counter').valueChanges().subscribe(
-      counter => this.idCounter = counter.counter
-    ));
-  }
+  // --------------------------------------------------------------------------------------------------
+  // Danger zone
+  // --------------------------------------------------------------------------------------------------
 
-  fetchOwnWishes() {
-    this.firestoreSubs.push(
-      this.ngFirestore.collection('users').doc(this.userId).collection('personalWishes').valueChanges().subscribe(
-        (wishes: Wish[]) => {
-          this.userWishes = wishes;
-          this.wishlister.next([...wishes]);
-        }
-      )
-    );
-  }
-
-  fetchWishlistList() {
+  fetchWishlists() {
     this.firestoreSubs.push(
       this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').valueChanges().subscribe(
         (wishlists: WishlistId[]) => {
           this.wishlists = wishlists;
-          this.wishlisterLister.next([...wishlists]);
+          this.userWishlists.next([...wishlists]);
         }
       )
     );
@@ -56,51 +70,69 @@ export class WishService {
       this.ngFirestore.collection('wishlists').doc(id).valueChanges().subscribe(
         (wishList: Wishlist) => {
           this.currentWishlist = wishList;
-          this.wishlisterById.next({...wishList});
+          this.wishlistById.next({...wishList});
         }
       )
     );
   }
 
-  getNewId() {
-    if (this.idCounter) {
-      const counter = this.idCounter + 1;
-      this.ngFirestore.collection('counter').doc<{counter: number}>('counter').update(
-        { counter: counter }
-      );
-      return counter;
+  // --------------------------------------------------------------------------------------------------
+  // Safe zone
+  // --------------------------------------------------------------------------------------------------
+
+  fetchOwnWishes() {
+    this.firestoreSubs.push(
+      this.ngFirestore.collection('users').doc(this.userId).valueChanges().subscribe(
+        (wishesId: any) => {
+          const wishesTemp = wishesId.personalWishes;
+          for (const id of wishesTemp) {
+            this.firestoreSubs.push(
+              this.ngFirestore.collection('wishes').doc<Wish>(id).valueChanges().subscribe(
+                (wish: Wish) => {
+                  this.addWishToOwnWishes(wish);
+                }
+              )
+            );
+          }
+        }
+      )
+    );
+  }
+
+  addWishToOwnWishes(wish: Wish) {
+    const wishTempId = this.ownWishes.findIndex(
+      (wishItem: Wish) => {
+        return wishItem.id === wish.id;
+      });
+    if (wishTempId !== -1) {
+      this.ownWishes[wishTempId] = wish;
     } else {
-      throw(new Error('Id not downloaded'));
+      this.ownWishes.push(wish);
+      this.ownWishesEmmiter.next([...this.ownWishes]);
     }
   }
 
-  getWishById(id) {
-    return {...this.userWishes[id]};
+  getWishById(id: string) {
+    const wishRef = this.ngFirestore.collection('wishes').doc<Wish>(id).ref;
+    wishRef.get().then(
+      (item: DocumentSnapshot)  => {
+        this.wishById.next({...item.data()});
+    });
   }
 
   addWish(wish: Wish) {
-    this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).set(wish);
+    const newWishRef = this.ngFirestore.collection('wishes/').ref;
+    newWishRef.add(wish).then(
+      (doc) => {
+        newWishRef.doc(doc.id).update({
+          ...wish,
+          id: doc.id
+        });
+      });
   }
 
   updateWish(wish: Wish) {
-    this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).update(wish);
-  }
-
-  addEmptyWishlistList() {
-    this.ngFirestore.collection('users/').doc(this.userId).collection('wishlists').add(
-      {
-        name: 'Test',
-        id: 'aaa',
-        wishes: [{
-          id: 999,
-          name: 'test'
-          // description: 'testing',
-          // creationDate: new Date(),
-          // lastModificationDate: new Date(),
-          // price: 999
-        }]
-      }
-    );
+    this.ngFirestore.collection('wishes/').doc(wish.id).update(wish);
   }
 
   setUserId(id: string) {
@@ -116,7 +148,7 @@ export class WishService {
   }
 
   // --------------------------------------------------------------------------------------------------
-  // Past utilities
+  // Dead zone
   // --------------------------------------------------------------------------------------------------
 
     // getWishes() {
@@ -127,5 +159,22 @@ export class WishService {
   //   for (const wish of this.userWishes) {
   //     this.ngFirestore.collection('users/').doc(this.userId).collection('personalWishes').doc(wish.id.toString()).set(wish);
   //   }
+  // }
+
+  // addEmptyWishlistList() {
+  //   this.ngFirestore.collection('users/').doc(this.userId).collection('wishlists').add(
+  //     {
+  //       name: 'Test',
+  //       id: 'aaa',
+  //       wishes: [{
+  //         id: 999,
+  //         name: 'test'
+  //         // description: 'testing',
+  //         // creationDate: new Date(),
+  //         // lastModificationDate: new Date(),
+  //         // price: 999
+  //       }]
+  //     }
+  //   );
   // }
 }

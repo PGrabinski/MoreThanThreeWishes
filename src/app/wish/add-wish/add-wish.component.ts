@@ -17,7 +17,7 @@ export class AddWishComponent implements OnInit {
 
   onSubmit(f: NgForm) {
     this.wishService.addWish({
-      id: this.wishService.getNewId(),
+      id: '',
       name: f.value.name,
       description: f.value.description,
       link: f.value.link,

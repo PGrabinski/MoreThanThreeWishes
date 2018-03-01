@@ -15,11 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  givenWishlist: Wishlist = {
-    name: '',
-    wishes: [],
-    id: ''
-  };
+  givenWishlistName: string;
   givenWishes: Wish[] = [];
   wisherSub: Subscription;
 
@@ -47,18 +43,18 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.ownMode) {
           this.wishesData.data = this.givenWishes;
-          this.wisherSub = this.wishService.wishlister.subscribe(
+          this.wisherSub = this.wishService.ownWishesEmmiter.subscribe(
             (wishes: Wish[]) => {
               this.givenWishes = wishes;
               this.wishesData.data = this.givenWishes;
             });
             this.wishService.fetchOwnWishes();
         } else {
-          this.wishesData.data = this.givenWishlist.wishes;
-          this.wisherSub = this.wishService.wishlisterById.subscribe(
+          this.wishesData.data = this.givenWishes;
+          this.wisherSub = this.wishService.wishlistById.subscribe(
             (wishList: Wishlist) => {
-              this.givenWishlist = wishList;
-              this.wishesData.data = this.givenWishlist.wishes;
+              this.givenWishlistName = wishList.name;
+              this.wishesData.data = this.givenWishes;
             }
           );
           this.wishService.fetchWishlistById(this.id);
