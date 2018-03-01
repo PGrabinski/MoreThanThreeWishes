@@ -2,5 +2,5 @@ import { Wish } from './wish.model';
 
 export class Wishlist {
     name: string;
-    wishes: string[];
+    wishes: Wish[];
 }

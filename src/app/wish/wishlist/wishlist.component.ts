@@ -34,7 +34,6 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   ) { }
 
   ngOnInit() {
-    console.log('WishlistComp initiated');
     this.routeSub = this.activatedRoute.params.subscribe(
       (params: Params) => {
         this.id =  params['id'];
@@ -55,6 +54,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
           this.wisherSub = this.wishService.wishlistById.subscribe(
             (wishList: Wishlist) => {
               this.givenWishlistName = wishList.name;
+              this.givenWishes = wishList.wishes;
               this.wishesData.data = this.givenWishes;
             }
           );
@@ -88,7 +88,5 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     if (this.routeSub) {
       this.routeSub.unsubscribe();
     }
-    console.log('WishlistComp destroyed');
-    
   }
 }

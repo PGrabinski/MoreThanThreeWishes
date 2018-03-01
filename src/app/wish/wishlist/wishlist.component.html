@@ -3,7 +3,7 @@
     <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter by">
   </mat-form-field>
 </div>
-<h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlist.name }}</h1>
+<h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h1>
 <mat-table #wishes [dataSource]="wishesData" matSort>
   <ng-container matColumnDef="creationDate">
     <mat-header-cell *matHeaderCellDef mat-sort-header>

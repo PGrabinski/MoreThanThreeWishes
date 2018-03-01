@@ -43,7 +43,13 @@ export class WishService {
   userId = '';
 
   // Currently viewed wishlist
-  currentWishlist: Wishlist;
+  currentWishlist: Wishlist = {
+    name: '',
+    wishes: []
+  };
+
+  // Currently viewed wishlist wishes' ids
+  currentWishlistIds: string[] = [];
 
   // List of wishlists available for user's view
   wishlists = [];
@@ -54,22 +60,48 @@ export class WishService {
   // Danger zone
   // --------------------------------------------------------------------------------------------------
 
+  // In theory we are safe, but beware!
+
+  // --------------------------------------------------------------------------------------------------
+  // Safe zone
+  // --------------------------------------------------------------------------------------------------
 
 
   fetchWishlistById(id: string) {
     this.firestoreSubs.push(
       this.ngFirestore.collection('wishlists').doc(id).valueChanges().subscribe(
-        (wishList: Wishlist) => {
-          this.currentWishlist = wishList;
-          this.wishlistById.next({...wishList});
+        (wishListId: any) => {
+          this.currentWishlist.name = wishListId.name;
+          for (const wishId of wishListId.wishes) {
+            const wishTempId = this.currentWishlistIds.findIndex(tempId => wishId === tempId);
+            if (wishTempId === -1) {
+              this.currentWishlistIds.push(id);
+            }
+            this.firestoreSubs.push(
+              this.ngFirestore.collection('wishes').doc<Wish>(wishId).valueChanges().subscribe(
+                (wish: Wish) => {
+                  this.addWishToCurrentWishlist(wish);
+                  this.wishlistById.next({...this.currentWishlist});
+                }
+              )
+            );
+          }
         }
       )
     );
   }
 
-  // --------------------------------------------------------------------------------------------------
-  // Safe zone
-  // --------------------------------------------------------------------------------------------------
+  addWishToCurrentWishlist(wish: Wish) {
+    const wishTempId = this.currentWishlist.wishes.findIndex(
+      (wishItem: Wish) => {
+        return wishItem.id === wish.id;
+      });
+    if (wishTempId !== -1) {
+      this.currentWishlist.wishes[wishTempId] = wish;
+    } else {
+      this.currentWishlist.wishes.push(wish);
+    }
+  }
 
   fetchWishlists() {
     this.firestoreSubs.push(
