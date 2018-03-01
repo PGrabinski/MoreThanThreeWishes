@@ -54,16 +54,7 @@ export class WishService {
   // Danger zone
   // --------------------------------------------------------------------------------------------------
 
-  fetchWishlists() {
-    this.firestoreSubs.push(
-      this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').valueChanges().subscribe(
-        (wishlists: WishlistId[]) => {
-          this.wishlists = wishlists;
-          this.userWishlists.next([...wishlists]);
-        }
-      )
-    );
-  }
+
 
   fetchWishlistById(id: string) {
     this.firestoreSubs.push(
@@ -79,6 +70,17 @@ export class WishService {
   // --------------------------------------------------------------------------------------------------
   // Safe zone
   // --------------------------------------------------------------------------------------------------
+
+  fetchWishlists() {
+    this.firestoreSubs.push(
+      this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').valueChanges().subscribe(
+        (wishlists: WishlistId[]) => {
+          this.wishlists = wishlists;
+          this.userWishlists.next([...wishlists]);
+        }
+      )
+    );
+  }
 
   fetchOwnWishes() {
     this.firestoreSubs.push(
