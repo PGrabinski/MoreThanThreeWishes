@@ -4,13 +4,15 @@
   </mat-form-field>
 </div>
 <h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h1>
+<h3 *ngIf="!ownMode" fxLayoutAlign="center center">Sharable token: {{ id }} <button matTooltip="Copy the token to the clipboard!" mat-icon-button color="primary" ngxClipboard [cbContent]="id" ><mat-icon>playlist_add</mat-icon></button></h3>
+
 <mat-table #wishes [dataSource]="wishesData" matSort>
   <ng-container matColumnDef="creationDate">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
       Creation
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-      <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
+      <a  routerLinkActive="active" routerLink="/mywishes/{{element.id}}" class="routerLink">
         {{element.creationDate | date}}
       </a>      
     </mat-cell>
@@ -20,7 +22,7 @@
       Name
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="/mywishes/{{element.id}}" class="routerLink">
         {{element.name}}
       </a>
     </mat-cell>
@@ -30,7 +32,7 @@
       Description
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index" fxHide.xs>
-        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="/mywishes/{{element.id}}" class="routerLink">
           {{element.description}}
         </a>
     </mat-cell>
@@ -40,7 +42,7 @@
       Price [zł]
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="/mywishes/{{element.id}}" class="routerLink">
           {{element.price}} 
         </a>
     </mat-cell>
@@ -50,7 +52,7 @@
       State
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <a  routerLinkActive="active" routerLink="{{element.id}}" class="routerLink">
+        <a  routerLinkActive="active" routerLink="/mywishes/{{element.id}}" class="routerLink">
           {{ element.state | state }}
         </a>
     </mat-cell>

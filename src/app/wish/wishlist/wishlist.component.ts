@@ -25,7 +25,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   wishesData = new MatTableDataSource<Wish>();
 
   ownMode: boolean;
-  private id: string;
+  id: string;
   routeSub: Subscription;
 
   constructor(
@@ -79,6 +79,10 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
 
   doFilter(phrase: string) {
     this.wishesData.filter = phrase.trim().toLowerCase();
+  }
+
+  copyToClipboard() {
+
   }
 
   ngOnDestroy() {

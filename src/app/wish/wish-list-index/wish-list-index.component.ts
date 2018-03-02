@@ -29,12 +29,15 @@ export class WishListIndexComponent implements OnInit {
   }
 
   addWishlist(form: NgForm) {
-    console.log(form.value.wishlistToken);
+    const wishlistToken = form.value.wishlistToken;
+    this.wishService.addExisitngWishlist(wishlistToken);
     form.resetForm();
   }
 
   addNewWishlist(form: NgForm) {
-    console.log(form.value.newWishlist);
+    const newWishName = form.value.newWishlist;
+    console.log(newWishName);
+    this.wishService.addNewWishlist(newWishName);
     form.resetForm();
   }
 }

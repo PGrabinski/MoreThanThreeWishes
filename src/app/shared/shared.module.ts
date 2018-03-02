@@ -4,19 +4,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StatePipe } from './state.pipe';
+import { ClipboardModule } from 'ngx-clipboard';
+
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialsModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    ClipboardModule
   ],
   exports: [
     MaterialsModule,
     FlexLayoutModule,
     FormsModule,
-    StatePipe
+    StatePipe,
+    ClipboardModule
   ],
   declarations: [StatePipe]
 })

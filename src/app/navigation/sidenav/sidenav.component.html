@@ -31,6 +31,14 @@
       Add a wish
     </span>
   </a>
+  <a mat-list-item routerLink="/wishlist" (click)="onClose()" *ngIf="userAuth">
+    <mat-icon>
+      menu
+    </mat-icon>
+    <span class="nav-item-label">
+      Wishlists
+    </span>
+  </a>
   <mat-list-item *ngIf="userAuth">
     <button mat-icon-button (click)="onLogout()">
       <mat-icon>

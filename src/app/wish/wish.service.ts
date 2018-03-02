@@ -1,3 +1,4 @@
+import { UiService } from './../shared/ui.service';
 import { WishlistId } from './wishlist-id';
 import { Wishlist } from './wishlist.model';
 import { Observable } from 'rxjs/Observable';
@@ -54,12 +55,39 @@ export class WishService {
   // List of wishlists available for user's view
   wishlists = [];
 
-  constructor(private ngFirestore: AngularFirestore) { }
+  constructor(
+    private ngFirestore: AngularFirestore,
+    private uiService: UiService
+  ) { }
 
   // --------------------------------------------------------------------------------------------------
   // Danger zone
   // --------------------------------------------------------------------------------------------------
 
+  addExisitngWishlist(wishlistToken: string) {
+    if (this.wishlists.findIndex(item => item.id === wishlistToken) === -1) {
+      this.ngFirestore.collection('wishlists').doc<{name: string, id: string}>(wishlistToken).ref.get().then(
+        (wishlist: DocumentSnapshot) => {
+          const newWishlist = {
+            name: wishlist.data().name,
+            id: wishlistToken
+          };
+          console.log(wishlist.data());
+          this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').add(newWishlist);
+        }
+      );
+    } else {
+      this.uiService.showSnackBar('This wishlist is already on your list.', null, 5000);
+    }
+  }
+
+  addNewWishlist(wishlistName: string) {
+    this.ngFirestore.collection('wishlists').add({name: wishlistName, wishes: []}).then(
+      doc => {
+        this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').add({name: wishlistName, id: doc.id});
+      }
+    );
+  }
   // In theory we are safe, but beware!
 
   // --------------------------------------------------------------------------------------------------
@@ -158,7 +186,7 @@ export class WishService {
     });
   }
 
-  addWish(wish: Wish) {
+  addWish(wish: Wish, wishlistId?: string) {
     const newWishRef = this.ngFirestore.collection('wishes/').ref;
     let newWishId: string;
     newWishRef.add(wish).then(
@@ -169,8 +197,17 @@ export class WishService {
           id: doc.id
         });
         const tempObj = {personalWishes: new Array<string>(...this.ownWishesIds, newWishId)};
-        console.log(tempObj);
         this.ngFirestore.collection('users').doc(this.userId).update(tempObj);
+        if (wishlistId) {
+          this.ngFirestore.collection('wishlists').doc(wishlistId).ref.get().then(
+            (document: DocumentSnapshot) => {
+              this.ngFirestore.collection('wishlists').doc(wishlistId).update({
+                name: document.data().name,
+                wishes: [...document.data().wishes, doc.id]
+              });
+            }
+          );
+        }
       });
   }
 
