@@ -19,7 +19,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   givenWishes: Wish[] = [];
   wisherSub: Subscription;
 
-  displayedColumns = ['creationDate', 'name', 'description', 'price', 'state'];
+  displayedColumns = ['creationDate', 'name', 'description', 'price', 'state', 'delete'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   wishesData = new MatTableDataSource<Wish>();
@@ -49,6 +49,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
               this.wishesData.data = this.givenWishes;
             });
             this.wishService.fetchOwnWishes();
+            this.displayedColumns = ['creationDate', 'name', 'description', 'price', 'state'];
         } else {
           this.wishesData.data = this.givenWishes;
           this.wisherSub = this.wishService.wishlistById.subscribe(
@@ -58,6 +59,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
               this.wishesData.data = this.givenWishes;
             }
           );
+          this.displayedColumns = ['creationDate', 'name', 'description', 'price', 'state', 'delete'];
           this.wishService.fetchWishlistById(this.id);
         }
       }
@@ -81,8 +83,8 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     this.wishesData.filter = phrase.trim().toLowerCase();
   }
 
-  copyToClipboard() {
-
+  removeWishFromWishlistByID(wishId: string) {
+    this.wishService.removeWishFromWishlistById(wishId, this.id);
   }
 
   ngOnDestroy() {

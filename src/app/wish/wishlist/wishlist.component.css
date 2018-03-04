@@ -14,7 +14,3 @@ a:hover {
 .routerLink:hover {
     color: lightgray;
 }
-
-.hoverTest:hover {
-    color:red;
-}

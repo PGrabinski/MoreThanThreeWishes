@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { UiService } from './../shared/ui.service';
 import { WishlistId } from './wishlist-id';
 import { Wishlist } from './wishlist.model';
@@ -57,7 +58,8 @@ export class WishService {
 
   constructor(
     private ngFirestore: AngularFirestore,
-    private uiService: UiService
+    private uiService: UiService,
+    private router: Router
   ) { }
 
   // --------------------------------------------------------------------------------------------------
@@ -87,6 +89,23 @@ export class WishService {
         this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').add({name: wishlistName, id: doc.id});
       }
     );
+  }
+
+  removeWishFromWishlistById(wishId: string, wishlistId: string) {
+      this.ngFirestore.collection('wishlists').doc(wishlistId).ref.get().then(
+        (documentSnapshot: DocumentSnapshot) => {
+          const newWishlistData = documentSnapshot.data();
+          const newWishlistName = newWishlistData.name;
+          const newWishlistWishes = [...newWishlistData.wishes.filter(id => id !== wishId)];
+          const newWishlist = {
+            name: newWishlistName,
+            wishes: newWishlistWishes
+          };
+          this.ngFirestore.collection('wishlists').doc(wishlistId).update(newWishlist);
+          console.log(newWishlist);
+          this.currentWishlist = newWishlist;
+          this.wishlistById.next({...this.currentWishlist});
+        });
   }
   // In theory we are safe, but beware!
 
