@@ -66,6 +66,10 @@ export class WishService {
   // Danger zone
   // --------------------------------------------------------------------------------------------------
 
+  emmitCurrentWishlist() {
+    this.wishlistById.next({...this.currentWishlist});
+  }
+
   addExisitngWishlist(wishlistToken: string) {
     if (this.wishlists.findIndex(item => item.id === wishlistToken) === -1) {
       this.ngFirestore.collection('wishlists').doc<{name: string, id: string}>(wishlistToken).ref.get().then(
@@ -74,7 +78,6 @@ export class WishService {
             name: wishlist.data().name,
             id: wishlistToken
           };
-          console.log(wishlist.data());
           this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').add(newWishlist);
         }
       );
@@ -100,12 +103,7 @@ export class WishService {
           wishes: [...document.data().wishes, wishId]
         });
       }
-    ).then(
-      doc => {
-        this.fetchWishlists();
-      }
     );
-    console.log(wishId + ' ' + wishlistId);
   }
 
   removeWishFromWishlistById(wishId: string, wishlistId: string) {
@@ -118,10 +116,14 @@ export class WishService {
             name: newWishlistName,
             wishes: newWishlistWishes
           };
-          this.ngFirestore.collection('wishlists').doc(wishlistId).update(newWishlist);
-          console.log(newWishlist);
-          this.currentWishlist = newWishlist;
-          this.wishlistById.next({...this.currentWishlist});
+          this.ngFirestore.collection('wishlists').doc(wishlistId).set(newWishlist).then(
+            doc => {
+              // this.fetchWishlistById(wishlistId);
+              // this.currentWishlist = newWishlist;
+              this.emmitCurrentWishlist();
+              // console.log(this.currentWishlist);
+            }
+          ).then(doc => console.log(this.currentWishlist));
         });
   }
 
@@ -154,6 +156,8 @@ export class WishService {
     );
   }
 
+  
+
   // In theory we are safe, but beware!
 
   // --------------------------------------------------------------------------------------------------
@@ -166,6 +170,7 @@ export class WishService {
       this.ngFirestore.collection('wishlists').doc(id).valueChanges().subscribe(
         (wishListId: any) => {
           this.currentWishlist.name = wishListId.name;
+          this.currentWishlist.wishes = [];
           for (const wishId of wishListId.wishes) {
             const wishTempId = this.currentWishlistIds.findIndex(tempId => wishId === tempId);
             if (wishTempId === -1) {
@@ -175,7 +180,7 @@ export class WishService {
               this.ngFirestore.collection('wishes').doc<Wish>(wishId).valueChanges().subscribe(
                 (wish: Wish) => {
                   this.addWishToCurrentWishlist(wish);
-                  this.wishlistById.next({...this.currentWishlist});
+                  this.emmitCurrentWishlist();
                 }
               )
             );

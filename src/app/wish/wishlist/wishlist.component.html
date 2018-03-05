@@ -1,19 +1,30 @@
-<div fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2px">
   <mat-form-field fxFlex="40%">
     <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter by">
   </mat-form-field>
+  <h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h1>
+  <h3 *ngIf="!ownMode" fxLayoutAlign="center center">Sharable token: {{ id }} <button matTooltip="Copy the token to the clipboard!" mat-icon-button color="primary" ngxClipboard [cbContent]="id" ><mat-icon>playlist_add</mat-icon></button></h3>
+  <h3 fxLayoutAlign="center center" *ngIf="!ownMode">
+    <span class="remove">Remove this wishlist:</span>
+    <button mat-icon-button (click)="removeThisWishlist()" color="primary">
+      <span>Remove</span>
+      <mat-icon>
+        remove_circle_outline
+      </mat-icon>
+    </button>
+  </h3>
+  <form fxLayout="row" #fAddWish="ngForm" (ngSubmit)="addWish(fAddWish)" fxLayoutAlign="center center" fxLayoutGap="10px">
+      <h3>Add your wish</h3>
+    <mat-form-field>
+      <mat-select placeholder="Choose a wish" value="none" ngModel name="wishId">
+        <mat-option *ngFor="let item of ownWishes" value="{{ item.id }}">
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="add">Add</button>
+  </form>
 </div>
-<h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h1>
-<h3 *ngIf="!ownMode" fxLayoutAlign="center center">Sharable token: {{ id }} <button matTooltip="Copy the token to the clipboard!" mat-icon-button color="primary" ngxClipboard [cbContent]="id" ><mat-icon>playlist_add</mat-icon></button></h3>
-<h3 fxLayoutAlign="center center" *ngIf="!ownMode">
-  <span class="remove">Remove this wishlist:</span>
-  <button mat-icon-button (click)="removeThisWishlist()" color="primary">
-    <span>Remove</span>
-    <mat-icon>
-      remove_circle_outline
-    </mat-icon>
-  </button>
-</h3>
 <mat-table #wishes [dataSource]="wishesData" matSort>
   <ng-container matColumnDef="creationDate">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -36,10 +47,10 @@
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>
+    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.lt-lg>
       Description
     </mat-header-cell>
-    <mat-cell *matCellDef="let element; let i = index" fxHide.xs>
+    <mat-cell *matCellDef="let element; let i = index" fxHide.lt-lg>
         <a  routerLinkActive="active" routerLink="/mywishes/{{element.id}}" class="routerLink">
           {{element.description}}
         </a>

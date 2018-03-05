@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Wishlist } from './../wishlist.model';
 import { Subscription } from 'rxjs/Subscription';
@@ -18,6 +19,8 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   givenWishlistName: string;
   givenWishes: Wish[] = [];
   wisherSub: Subscription;
+  ownWishes: Wish[] = [];
+  ownWishesSub: Subscription;
 
   displayedColumns = ['creationDate', 'name', 'description', 'price', 'state', 'delete'];
   @ViewChild(MatSort) sort: MatSort;
@@ -60,7 +63,13 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
             }
           );
           this.wishService.fetchWishlistById(this.id);
+          this.ownWishesSub = this.wishService.ownWishesEmmiter.subscribe(
+            (wishes: Wish[]) => {
+              this.ownWishes = wishes;
+            });
+            this.wishService.fetchOwnWishes();
         }
+        // this.wishesData._updateChangeSubscription();
       }
     );
   }
@@ -70,13 +79,13 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     this.wishesData.paginator = this.paginator;
    }
 
-   ngOnChanges() {
-     if (this.ownMode) {
-       this.wishService.fetchOwnWishes();
-     } else {
-       this.wishService.fetchWishlistById(this.id);
-     }
-   }
+  ngOnChanges() {
+    if (this.ownMode) {
+      this.wishService.fetchOwnWishes();
+    } else {
+      this.wishService.emmitCurrentWishlist();
+    }
+  }
 
   doFilter(phrase: string) {
     this.wishesData.filter = phrase.trim().toLowerCase();
@@ -85,14 +94,25 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   removeWishFromWishlist(wishId: string) {
     if (this.id) {
       this.wishService.removeWishFromWishlistById(wishId, this.id);
+      // this.wishService.emmitCurrentWishlist();
+      // this.givenWishes = this.givenWishes.filter( (wish: Wish) => wish.id !== wishId);
+      // this.wishesData.data = this.Wi
+      // console.log(this.wishesData.data);
+      // this.wishesData._updateChangeSubscription();
     } else {
       this.wishService.removeWishFromOwnWishlist(wishId);
+      this.wishService.fetchOwnWishes();
     }
   }
 
-  removeThisWishlist(){
+  removeThisWishlist() {
     this.wishService.removeWishlist(this.id);
     this.router.navigate(['/wishlist']);
+  }
+
+  addWish(form: NgForm) {
+    this.wishService.addWishToWishlist(this.ownWishes.find(wish => wish.id === form.value.wishId).id, this.id);
+    form.resetForm();
   }
 
   ngOnDestroy() {
