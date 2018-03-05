@@ -18,3 +18,11 @@ a:hover {
 .remove {
     margin-right: 10px;
 }
+
+mat-row {
+    cursor: pointer;
+}
+
+mat-cell:hover {
+    color: lightgray;
+}

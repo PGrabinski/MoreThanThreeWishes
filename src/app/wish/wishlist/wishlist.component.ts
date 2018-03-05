@@ -115,6 +115,10 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     form.resetForm();
   }
 
+  Show(row: any) {
+    console.log(row.id);
+  }
+
   ngOnDestroy() {
     if (this.wisherSub) {
       this.wisherSub.unsubscribe();
