@@ -22,6 +22,11 @@
   <mat-card fxLayout="row" *ngFor="let item of wishlistsData" fxFlex.lt-sm="100%" fxFill fxLayoutAlign="center center">
     <mat-card-title>
       <a routerLink="/wishlist/{{item.id}}" class="wishlistLink">{{ item.name }}</a>
+      <button mat-icon-button (click)="removeWishlist(item.id)" color="primary">
+        <mat-icon>
+          remove_circle_outline
+        </mat-icon>
+      </button>
     </mat-card-title>
   </mat-card>
 </mat-list>

@@ -1,4 +1,4 @@
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Wishlist } from './../wishlist.model';
 import { Subscription } from 'rxjs/Subscription';
 import { WishService } from './../wish.service';
@@ -30,7 +30,8 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
 
   constructor(
     private wishService: WishService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -87,6 +88,11 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     } else {
       this.wishService.removeWishFromOwnWishlist(wishId);
     }
+  }
+
+  removeThisWishlist(){
+    this.wishService.removeWishlist(this.id);
+    this.router.navigate(['/wishlist']);
   }
 
   ngOnDestroy() {

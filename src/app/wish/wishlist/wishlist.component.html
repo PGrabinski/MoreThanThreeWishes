@@ -5,7 +5,15 @@
 </div>
 <h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h1>
 <h3 *ngIf="!ownMode" fxLayoutAlign="center center">Sharable token: {{ id }} <button matTooltip="Copy the token to the clipboard!" mat-icon-button color="primary" ngxClipboard [cbContent]="id" ><mat-icon>playlist_add</mat-icon></button></h3>
-
+<h3 fxLayoutAlign="center center" *ngIf="!ownMode">
+  <span class="remove">Remove this wishlist:</span>
+  <button mat-icon-button (click)="removeThisWishlist()" color="primary">
+    <span>Remove</span>
+    <mat-icon>
+      remove_circle_outline
+    </mat-icon>
+  </button>
+</h3>
 <mat-table #wishes [dataSource]="wishesData" matSort>
   <ng-container matColumnDef="creationDate">
     <mat-header-cell *matHeaderCellDef mat-sort-header>

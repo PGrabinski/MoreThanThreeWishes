@@ -119,6 +119,24 @@ export class WishService {
       this.ownWishesEmmiter.next(newOwnWishes);
   }
 
+  removeWishlist(wishlistId: string) {
+    this.ngFirestore.collection('wishlists').doc(wishlistId).delete().then(
+      doc => {
+        this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').ref.where('id', '==', wishlistId).get().then(
+          (documents: QuerySnapshot) => {
+            documents.forEach( document => document.ref.delete());
+          }
+        );
+      }
+    ).then(
+      () => {
+        this.wishlists = this.wishlists.filter(
+          id => id !== wishlistId
+        );
+      }
+    );
+  }
+
   // In theory we are safe, but beware!
 
   // --------------------------------------------------------------------------------------------------

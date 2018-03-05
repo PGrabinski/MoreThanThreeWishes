@@ -14,3 +14,7 @@ a:hover {
 .routerLink:hover {
     color: lightgray;
 }
+
+.remove {
+    margin-right: 10px;
+}
