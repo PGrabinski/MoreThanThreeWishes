@@ -57,12 +57,12 @@
         </a>
     </mat-cell>
   </ng-container>
-  <ng-container matColumnDef="delete" *ngIf="id">
+  <ng-container matColumnDef="delete">
     <mat-header-cell *matHeaderCellDef>
       Delete
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let i = index">
-        <button mat-icon-button (click)="removeWishFromWishlistByID(element.id)">
+        <button mat-icon-button (click)="removeWishFromWishlist(element.id)">
           <mat-icon>
             remove_circle_outline
           </mat-icon>

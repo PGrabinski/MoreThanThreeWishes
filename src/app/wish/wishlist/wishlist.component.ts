@@ -49,7 +49,6 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
               this.wishesData.data = this.givenWishes;
             });
             this.wishService.fetchOwnWishes();
-            this.displayedColumns = ['creationDate', 'name', 'description', 'price', 'state'];
         } else {
           this.wishesData.data = this.givenWishes;
           this.wisherSub = this.wishService.wishlistById.subscribe(
@@ -59,7 +58,6 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
               this.wishesData.data = this.givenWishes;
             }
           );
-          this.displayedColumns = ['creationDate', 'name', 'description', 'price', 'state', 'delete'];
           this.wishService.fetchWishlistById(this.id);
         }
       }
@@ -83,8 +81,12 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     this.wishesData.filter = phrase.trim().toLowerCase();
   }
 
-  removeWishFromWishlistByID(wishId: string) {
-    this.wishService.removeWishFromWishlistById(wishId, this.id);
+  removeWishFromWishlist(wishId: string) {
+    if (this.id) {
+      this.wishService.removeWishFromWishlistById(wishId, this.id);
+    } else {
+      this.wishService.removeWishFromOwnWishlist(wishId);
+    }
   }
 
   ngOnDestroy() {

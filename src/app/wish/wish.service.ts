@@ -107,6 +107,18 @@ export class WishService {
           this.wishlistById.next({...this.currentWishlist});
         });
   }
+
+  removeWishFromOwnWishlist (wishId: string) {
+      const newWishlist = this.ownWishesIds.filter(id => id !== wishId);
+      this.ownWishesIds = newWishlist;
+      this.ngFirestore.collection('users').doc(this.userId).update({personalWishes: newWishlist});
+      const newOwnWishes = this.ownWishes.filter( (wish: Wish) => {
+        return wish.id !== wishId;
+      });
+      this.ownWishes = newOwnWishes;
+      this.ownWishesEmmiter.next(newOwnWishes);
+  }
+
   // In theory we are safe, but beware!
 
   // --------------------------------------------------------------------------------------------------
