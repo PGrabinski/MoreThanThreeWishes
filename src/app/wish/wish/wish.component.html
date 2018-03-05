@@ -29,8 +29,19 @@
         </mat-list-item>
       </mat-list>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
       <button mat-raised-button color="primary" routerLink="edit">Edit</button>
+      <h3>Add to a wishlist</h3>
+      <form fxLayout="row" #fAddTo="ngForm" (ngSubmit)="addTo(fAddTo)" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <mat-form-field>
+          <mat-select placeholder="Choose a wishlist" value="none" ngModel name="wishlistId">
+            <mat-option *ngFor="let item of availableWishlists" value="{{ item.id }}">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="add">Add</button>
+      </form>
     </mat-card-actions>
   </mat-card>
 </section>

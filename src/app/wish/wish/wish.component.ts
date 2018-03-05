@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { WishlistId } from './../wishlist-id';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Wish } from './../wish.model';
@@ -21,7 +23,14 @@ export class WishComponent implements OnInit {
     state: null
   };
   wishSub: Subscription;
-  constructor(private wishService: WishService, private activatedRoute: ActivatedRoute) { }
+  availableWishlistsSub: Subscription;
+  availableWishlists: WishlistId[] = [];
+
+  constructor(
+    private wishService: WishService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(
@@ -34,5 +43,16 @@ export class WishComponent implements OnInit {
         this.wish = wish;
       }
     );
+    this.availableWishlistsSub = this.wishService.userWishlists.subscribe(
+      (wishlistsIds: WishlistId[]) => {
+        this.availableWishlists = wishlistsIds;
+      }
+    );
+    this.wishService.fetchWishlists();
+  }
+
+  addTo(form: NgForm) {
+    this.wishService.addWishToWishlist(this.wish.id, form.value.wishlistId);
+    this.router.navigate(['/wishlist', form.value.wishlistId]);
   }
 }

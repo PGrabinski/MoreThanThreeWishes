@@ -91,6 +91,23 @@ export class WishService {
     );
   }
 
+  addWishToWishlist(wishId: string, wishlistId: string) {
+    const wishlistRef = this.ngFirestore.collection('wishlists').doc(wishlistId).ref;
+    wishlistRef.get().then(
+      (document: DocumentSnapshot) => {
+        wishlistRef.set({
+          name: document.data().name,
+          wishes: [...document.data().wishes, wishId]
+        });
+      }
+    ).then(
+      doc => {
+        this.fetchWishlists();
+      }
+    );
+    console.log(wishId + ' ' + wishlistId);
+  }
+
   removeWishFromWishlistById(wishId: string, wishlistId: string) {
       this.ngFirestore.collection('wishlists').doc(wishlistId).ref.get().then(
         (documentSnapshot: DocumentSnapshot) => {

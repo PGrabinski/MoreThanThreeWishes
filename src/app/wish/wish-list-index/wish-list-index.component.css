@@ -11,3 +11,7 @@
 .add {
     height: 75%;
 }
+
+mat-form-field {
+    width: 50%;
+}

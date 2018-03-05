@@ -7,7 +7,6 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 import { AddWishComponent } from './add-wish/add-wish.component';
 import { EditWishComponent } from './edit-wish/edit-wish.component';
 import { WishListIndexComponent } from './wish-list-index/wish-list-index.component';
-import { AddWishlistComponent } from './add-wishlist/add-wishlist.component';
 
 @NgModule({
   imports: [
@@ -20,8 +19,7 @@ import { AddWishlistComponent } from './add-wishlist/add-wishlist.component';
     WishlistComponent,
     AddWishComponent,
     EditWishComponent,
-    WishListIndexComponent,
-    AddWishlistComponent
+    WishListIndexComponent
   ]
 })
 export class WishModule { }

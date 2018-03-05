@@ -6,3 +6,7 @@
 .wishLink:hover {
     color: lightgrey;
 }
+
+.add {
+    margin: 10px;
+}
