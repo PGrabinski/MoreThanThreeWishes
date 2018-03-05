@@ -87,21 +87,41 @@ export class WishService {
   }
 
   addNewWishlist(wishlistName: string) {
-    this.ngFirestore.collection('wishlists').add({name: wishlistName, wishes: []}).then(
-      doc => {
-        this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').add({name: wishlistName, id: doc.id});
-      }
-    );
+    this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').ref.get().then(
+      (query: QuerySnapshot) => {
+        let notExisting = true;
+        query.forEach(
+          (docItem: DocumentSnapshot) => {
+          if (docItem.data().name === wishlistName) {
+            notExisting = false;
+          }
+        });
+        if (notExisting) {
+          this.ngFirestore.collection('wishlists').add({name: wishlistName, wishes: []}).then(
+            doc => {
+              this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').add({name: wishlistName, id: doc.id});
+            }
+          );
+        } else {
+          this.uiService.showSnackBar('There is already a wishlist with this name!', null, 5000);
+        }
+    });
   }
 
   addWishToWishlist(wishId: string, wishlistId: string) {
     const wishlistRef = this.ngFirestore.collection('wishlists').doc(wishlistId).ref;
     wishlistRef.get().then(
       (document: DocumentSnapshot) => {
-        wishlistRef.set({
-          name: document.data().name,
-          wishes: [...document.data().wishes, wishId]
-        });
+        const tempWishlist = document.data();
+        const wishArrayId = tempWishlist.wishes.findIndex( id => id === wishId);
+        if (wishArrayId === -1) {
+          wishlistRef.set({
+            name: document.data().name,
+            wishes: [...document.data().wishes, wishId]
+          });
+        } else {
+          this.uiService.showSnackBar('This wish is already on this wishlist!', null, 5000);
+        }
       }
     );
   }

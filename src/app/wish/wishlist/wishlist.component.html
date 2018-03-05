@@ -2,27 +2,27 @@
   <mat-form-field fxFlex="40%">
     <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter by">
   </mat-form-field>
-  <h1 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h1>
-  <h3 *ngIf="!ownMode" fxLayoutAlign="center center">Sharable token: {{ id }} <button matTooltip="Copy the token to the clipboard!" mat-icon-button color="primary" ngxClipboard [cbContent]="id" ><mat-icon>playlist_add</mat-icon></button></h3>
-  <h3 fxLayoutAlign="center center" *ngIf="!ownMode">
-    <span class="remove">Remove this wishlist:</span>
+  <h2 *ngIf="!ownMode" fxLayoutAlign="center center">{{ givenWishlistName }}</h2>
+  <h4 *ngIf="!ownMode" fxLayoutAlign="center center">Sharable token: {{ id }} <button matTooltip="Copy the token to the clipboard!" mat-icon-button color="primary" ngxClipboard [cbContent]="id" ><mat-icon>playlist_add</mat-icon></button></h4>
+  <h4 fxLayoutAlign="center center" *ngIf="!ownMode">
+    <span class="remove">Remove this wishlist</span>
     <button mat-icon-button (click)="removeThisWishlist()" color="primary">
       <span>Remove</span>
       <mat-icon>
         remove_circle_outline
       </mat-icon>
     </button>
-  </h3>
+  </h4>
   <form fxLayout="row" #fAddWish="ngForm" (ngSubmit)="addWish(fAddWish)" fxLayoutAlign="center center" fxLayoutGap="10px">
-      <h3>Add your wish</h3>
+      <h4>Add your wish</h4>
     <mat-form-field>
-      <mat-select placeholder="Choose a wish" value="none" ngModel name="wishId">
+      <mat-select placeholder="Choose a wish" value="none" ngModel name="wishId" required>
         <mat-option *ngFor="let item of ownWishes" value="{{ item.id }}">
           {{ item.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="primary" class="add">Add</button>
+    <button mat-raised-button color="primary" class="add" [disabled]="fAddWish.invalid">Add</button>
   </form>
 </div>
 <mat-table #wishes [dataSource]="wishesData" matSort>
