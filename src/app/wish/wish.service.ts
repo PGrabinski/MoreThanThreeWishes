@@ -176,7 +176,7 @@ export class WishService {
     );
   }
 
-  
+
 
   // In theory we are safe, but beware!
 
