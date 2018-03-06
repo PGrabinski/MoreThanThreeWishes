@@ -19,6 +19,9 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
+import { HowToComponent } from './navigation/how-to/how-to.component';
+import { AboutComponent } from './navigation/about/about.component';
+import { FooterComponent } from './navigation/footer/footer.component';
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import { environment } from '../environments/environment';
     AppComponent,
     HeaderComponent,
     SidenavComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    HowToComponent,
+    AboutComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

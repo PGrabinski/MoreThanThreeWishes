@@ -19,3 +19,4 @@ Live under: [More Than Three Wishes](http://pgrabinski.pl/MT3W)
 * [ ] A lot of problems of async connection to the database - partialy solved with tons of code redundancy
 * [ ] Overgrown data managment service
 * [ ] Unit tests - allmost everything depends on the Firebase connection
+* [ ] Second language version - Translate library should be used

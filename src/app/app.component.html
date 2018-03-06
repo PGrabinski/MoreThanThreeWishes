@@ -2,10 +2,11 @@
   <mat-sidenav role="navigation" #sidenav>
     <app-sidenav (closeSidenav)="sidenav.close()"></app-sidenav>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content fxLayout="column" fxLayoutGap="45px">
     <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
-    <main>
+    <main fxFlex="95%" fxFlexFill>
       <router-outlet></router-outlet>
     </main>
+    <app-footer fxItemAlign="end"></app-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>
