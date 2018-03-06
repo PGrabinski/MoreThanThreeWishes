@@ -1,3 +1,4 @@
+import { UiService } from './../../shared/ui.service';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Wishlist } from './../wishlist.model';
@@ -22,6 +23,9 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   ownWishes: Wish[] = [];
   ownWishesSub: Subscription;
 
+  spinnerRunning = true;
+  spinnerSub: Subscription;
+
   displayedColumns = ['creationDate', 'name', 'description', 'price', 'state', 'delete'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -34,10 +38,13 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   constructor(
     private wishService: WishService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private uiService: UiService
   ) { }
 
   ngOnInit() {
+    this.spinnerSub = this.uiService.spinnerRunning.subscribe( running => this.spinnerRunning = running);
+    this.uiService.startSpinner();
     this.routeSub = this.activatedRoute.params.subscribe(
       (params: Params) => {
         this.id =  params['id'];
@@ -51,6 +58,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
             (wishes: Wish[]) => {
               this.givenWishes = wishes;
               this.wishesData.data = this.givenWishes;
+              this.uiService.stopSpinner();
             });
             this.wishService.fetchOwnWishes();
         } else {
@@ -60,6 +68,7 @@ export class WishlistComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
               this.givenWishlistName = wishList.name;
               this.givenWishes = wishList.wishes;
               this.wishesData.data = this.givenWishes;
+              this.uiService.stopSpinner();
             }
           );
           this.wishService.fetchWishlistById(this.id);

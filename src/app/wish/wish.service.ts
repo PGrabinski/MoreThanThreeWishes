@@ -223,6 +223,7 @@ export class WishService {
   }
 
   fetchWishlists() {
+    this.uiService.startSpinner();
     this.firestoreSubs.push(
       this.ngFirestore.collection('users').doc(this.userId).collection('wishlists').valueChanges().subscribe(
         (wishlists: WishlistId[]) => {
