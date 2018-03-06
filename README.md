@@ -1,7 +1,7 @@
 # MoreThanThreeWishes
 
 ### Application for wishlist sharing
-Live under: [More Than Three Wishes]{http://pgrabinski.pl/MT3W}
+Live under: [More Than Three Wishes](http://pgrabinski.pl/MT3W)
 
 ## TechStack
 **Main architecture:** Angular 5
