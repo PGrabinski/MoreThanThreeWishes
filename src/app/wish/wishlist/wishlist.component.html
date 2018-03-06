@@ -79,7 +79,6 @@
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <!-- (click)="Show(row)" -->
   <mat-row *matRowDef="let row; columns: displayedColumns;" routerLinkActive="active" routerLink="/mywishes/{{row.id}}"></mat-row>
 </mat-table>
 <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[1,5,10,20,50]"></mat-paginator>
